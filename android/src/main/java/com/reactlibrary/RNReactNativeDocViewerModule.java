@@ -250,17 +250,16 @@ public class RNReactNativeDocViewerModule extends ReactContextBaseJavaModule {
             return null;
         }
     }
-     /**
-     * Returns the MIME Type of the file by looking at file name extension in
-     * the URL.
-     *
-     * @param url
-     * @return
-     */
-    private static String getMimeType(String url) {
-        String mimeType = null;
-        System.out.println("Url: " + url);
+
+    private static String getMimeTypeByUrl(String url) {
+//        System.out.println("Url: " + url);
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        return getMimeTypeByExtension(extension);
+    }
+
+    private static String getMimeTypeByExtension(String extension) {
+        String mimeType = null;
+
         if (extension != null) {
             mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         }
@@ -313,10 +312,10 @@ public class RNReactNativeDocViewerModule extends ReactContextBaseJavaModule {
             Context context = getCurrentActivity();
            String mimeType;
             // mime type of file data
-            if (fileName != null && fileType != null) {
-               mimeType = getMimeType(fileName + "." +fileType);
+            if (fileType != null) {
+               mimeType = getMimeTypeByExtension(fileType);
             } else {
-              mimeType = getMimeType(url);
+              mimeType = getMimeTypeByUrl(url);
             }
             if (mimeType == null || context == null) {
                 return;
